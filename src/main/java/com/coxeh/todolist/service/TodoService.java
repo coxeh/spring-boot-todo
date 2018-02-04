@@ -19,4 +19,17 @@ public class TodoService {
 	public Todo createNew(Todo todo) {
 		return this.repository.insert(todo);
 	}
+	
+	public Todo createOrUpdate(Todo todo) {
+		return this.repository.save(todo);
+	}
+	
+	public void removeById(String id) {
+		this.repository.delete(id);	
+	}
+	
+	public Todo findById(String id) {
+		return this.repository.findOne(id);
+	}
+	
 }

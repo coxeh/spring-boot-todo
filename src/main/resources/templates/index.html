@@ -12,19 +12,22 @@
 	<ul>
 		<li th:each="task : ${tasks}">
 		<span th:text="${task.task}"></span>
-		<a th:href="@{'/?edit=' + ${task.id}}" class="btn btn-primary">Edit</a>
-		<a th:href="@{'/?delete=' + ${task.id}}" class="btn btn-danger">Delete</a>
+		<a th:href="@{'/'(action='edit',id=${task.id})}" class="btn btn-primary">Edit</a>
+		<a th:href="@{'/'(action='delete',id=${task.id})}" class="btn btn-danger">Delete</a>
 		</li>
 	</ul>
 	
-	<h4>Create Todo</h4>
-	<div class="well">
+
+	<div class="card card-body bg-light">
+		<h4 th:text="${todo==null} ? 'Create Todo':'Edit Todo'">Create Todo</h4>
 		<form method="POST" action="/">
+			<input th:if="${todo !=null}" type="hidden" name="id" th:value="${todo.id}" />
 			<div class="form-group">
 			    <label for="task">Your Task</label>
-			    <input type="text" class="form-control" id="task" placeholder="Enter task" name="task" />
+			    <input type="text" class="form-control" id="task" placeholder="Enter task" name="task" th:value="${todo?.task}" />
 			  </div>
-			  <button type="submit" class="btn btn-primary">Add Todo</button>
+			  <button type="submit" class="btn btn-primary" th:text="${todo==null} ? 'Add Todo':'Edit Todo'">Add Todo</button>
+			  <a href="/" class="btn btn-secondary" th:if="${todo!=null}">Cancel</a>
 		</form>
 	</div>
 	</div>
