@@ -24,7 +24,7 @@ public class IndexController {
 	
 	@RequestMapping(value="/", method = RequestMethod.GET)
     public String showIndexPage(
-    		TodoForm todo,
+    		@ModelAttribute("todo") TodoForm todo,
     		Model model,
     		@RequestParam(value = "action", required=false) String action, 
     		@RequestParam(value = "id", required=false) String id
@@ -50,7 +50,6 @@ public class IndexController {
 		
 		List<Todo> tasks = todoService.findAll();
 		model.addAttribute("tasks", tasks);
-		model.addAttribute("todo", todo);
         return "index";
     }
 	
