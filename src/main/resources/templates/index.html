@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello Spring Boot!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+</head>
+<body>
+	<div class="container">
+	<h1>Todo List</h1>
+	
+	<ul>
+		<li th:each="task : ${tasks}">
+		<span th:text="${task.task}"></span>
+		<a th:href="@{'/?edit=' + ${task.id}}" class="btn btn-primary">Edit</a>
+		<a th:href="@{'/?delete=' + ${task.id}}" class="btn btn-danger">Delete</a>
+		</li>
+	</ul>
+	
+	<h4>Create Todo</h4>
+	<div class="well">
+		<form method="POST" action="/">
+			<div class="form-group">
+			    <label for="task">Your Task</label>
+			    <input type="text" class="form-control" id="task" placeholder="Enter task" name="task" />
+			  </div>
+			  <button type="submit" class="btn btn-primary">Add Todo</button>
+		</form>
+	</div>
+	</div>
+
+</body>
+</html>
