@@ -7,29 +7,34 @@
 </head>
 <body>
 	<div class="container">
-	<h1>Todo List</h1>
+		<h1>Todo List</h1>
+		
+		<ul>
+			<li th:each="task : ${tasks}">
+			<span th:text="${task.task}"></span>
+			<a th:href="@{'/'(action='edit',id=${task.id})}" class="btn btn-primary">Edit</a>
+			<a th:href="@{'/'(action='delete',id=${task.id})}" class="btn btn-danger">Delete</a>
+			</li>
+		</ul>
+		
 	
-	<ul>
-		<li th:each="task : ${tasks}">
-		<span th:text="${task.task}"></span>
-		<a th:href="@{'/'(action='edit',id=${task.id})}" class="btn btn-primary">Edit</a>
-		<a th:href="@{'/'(action='delete',id=${task.id})}" class="btn btn-danger">Delete</a>
-		</li>
-	</ul>
-	
-
-	<div class="card card-body bg-light">
-		<h4 th:text="${todo==null} ? 'Create Todo':'Edit Todo'">Create Todo</h4>
-		<form method="POST" action="/">
-			<input th:if="${todo !=null}" type="hidden" name="id" th:value="${todo.id}" />
-			<div class="form-group">
-			    <label for="task">Your Task</label>
-			    <input type="text" class="form-control" id="task" placeholder="Enter task" name="task" th:value="${todo?.task}" />
-			  </div>
-			  <button type="submit" class="btn btn-primary" th:text="${todo==null} ? 'Add Todo':'Edit Todo'">Add Todo</button>
-			  <a href="/" class="btn btn-secondary" th:if="${todo!=null}">Cancel</a>
-		</form>
-	</div>
+		<div class="card card-body bg-light">
+		
+			<form method="POST" action="/" th:object="${todo}">
+				<h4 th:text="*{isEditing()}? 'Edit Todo':'Create Todo'">Create Todo</h4>
+				<input type="hidden" th:field="*{id}" />
+				<div class="form-group">
+				    <label for="task">Your Task</label>
+				    <input type="text" class="form-control" placeholder="Enter task" th:field="*{task}" />
+				    <ul>
+					  <li th:each="err : ${#fields.errors('task')}" th:text="${err}" />
+					</ul>
+				  </div>
+				  <button type="submit" class="btn btn-primary" th:text="*{isEditing()}? 'Edit Todo':'Add Todo'">Add Todo</button>
+				  <a href="/" class="btn btn-secondary" th:if="*{isEditing()}">Cancel</a>
+				  
+			</form>
+		</div>
 	</div>
 
 </body>
