@@ -28,6 +28,10 @@ public class Todo {
 		this.task = task;
 		return this;
 	}
+	public Todo setId(String id) {
+		this.id = id;
+		return this;
+	}
 
 	//Getters
 	public String getTask() {
