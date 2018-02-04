@@ -1,6 +1,9 @@
 package com.coxeh.todolist.model;
 
 import java.util.Date;
+
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -10,6 +13,7 @@ public class Todo {
 	@Id
 	private String id;
 	
+	@Size(min=1)
 	private String task;
 	
 	@DateTimeFormat(iso=ISO.DATE_TIME)
@@ -36,5 +40,9 @@ public class Todo {
 		return this.id;
 	}
 
+	
+	public Boolean isEditing() {
+		return this.id !=null && this.id.length()>0;
+	}
 	
 }

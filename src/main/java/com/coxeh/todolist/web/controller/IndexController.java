@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.coxeh.todolist.service.TodoService;
-import com.coxeh.todolist.form.TodoForm;
 import com.coxeh.todolist.model.Todo;
 
 @Controller
@@ -24,7 +23,7 @@ public class IndexController {
 	
 	@RequestMapping(value="/", method = RequestMethod.GET)
     public String showIndexPage(
-    		@ModelAttribute("todo") TodoForm todo,
+    		@ModelAttribute("todo") Todo todo,
     		Model model,
     		@RequestParam(value = "action", required=false) String action, 
     		@RequestParam(value = "id", required=false) String id
@@ -36,13 +35,11 @@ public class IndexController {
 					this.todoService.removeById(id);
 					break;
 				case "edit":
-					Todo editTodo = this.todoService.findById(id);
-					if(editTodo == null) {
-						return "redirect:/";
+					todo = this.todoService.findById(id);
+					if(todo == null) {
+						return "redirect:/?notfound";
 					}
-					todo
-						.setId(editTodo.getId())
-						.setTask(editTodo.getTask());
+					model.addAttribute("todo", todo);
 					break;
 					
 			}
@@ -55,7 +52,7 @@ public class IndexController {
 	
 	@RequestMapping(value="/", method = RequestMethod.POST)
 	public String createTask(
-		@Valid @ModelAttribute("todo") TodoForm todo, 
+		@Valid @ModelAttribute("todo") Todo todo, 
 		BindingResult bindingResult,
 		Model model
 	) {
@@ -65,16 +62,7 @@ public class IndexController {
 			return "index";
 		}
 		
-		Todo todoModel;
-		if(todo.getId().length()==0) {
-			todoModel = new Todo();
-		}else {
-			todoModel = this.todoService.findById(todo.getId());
-		}
-		if(todoModel != null) {
-			todoModel.setTask(todo.getTask());
-			this.todoService.createOrUpdate(todoModel);
-		}
+		this.todoService.createOrUpdate(todo);
 		
 		return "redirect:/";
 	}
